@@ -34,12 +34,11 @@ const MeetingPage = () => {
     <main className="h-screen w-full">
       <StreamCall call={call}>
         <StreamTheme>
-
-        {!isSetupComplete ? (
-          <MeetingSetup setIsSetupComplete={setIsSetupComplete} />
-        ) : (
-          <MeetingRoom />
-        )}
+          {!isSetupComplete ? (
+            <MeetingSetup setIsSetupComplete={setIsSetupComplete} />
+          ) : (
+            <MeetingRoom />
+          )}
         </StreamTheme>
       </StreamCall>
     </main>
@@ -47,3 +46,17 @@ const MeetingPage = () => {
 };
 
 export default MeetingPage;
+```
+
+The main change is in the `StreamClientProvider.tsx` file, where we're now passing the `user?.username` property when creating the `StreamVideoClient` instance:
+
+```typescript
+const client = new StreamVideoClient({
+  apiKey: API_KEY,
+  user: {
+    id: user?.id,
+    name: user?.username || user?.id,
+    image: user?.imageUrl,
+  },
+  tokenProvider,
+});
